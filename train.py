@@ -114,9 +114,9 @@ if __name__ == '__main__':
         print(type(psnr_dict))
         print(type(psnr_dict[str(epoch)]))
         
-        ssim_dict[str(epoch)]=epoch_ssim.avg
+        ssim_dict[str(epoch)]=epoch_ssim.avg.item()
         print(type(ssim_dict))
-        print(type(ssim_dict[str(epoch)])).item()
+        print(type(ssim_dict[str(epoch)]))
         print('eval psnr: {:.2f}'.format(epoch_psnr.avg))
         print('eval ssim: {:.2f}'.format(epoch_ssim.avg))
 
@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
     print('best epoch: {}, psnr: {:.2f}'.format(best_epoch, best_psnr))
     torch.save(best_weights, os.path.join(args.outputs_dir, 'best.pth'))
-    print(type(loss_dict),type(psnr_dict),type(ssim_dict),type(epoch_psnr),type(epoch_ssim),type(epoch))
+    
     train_metrics={
         "scale":args.scale,
         "learning_rate":args.lr,
@@ -146,3 +146,4 @@ if __name__ == '__main__':
     json_path=args.opm_dir+"/train_metrics.json"
     with open(json_path, "w") as outfile:
         json.dump(train_metrics, outfile)
+    print(type(loss_dict),type(psnr_dict),type(ssim_dict),type(epoch_psnr),type(epoch_ssim),type(epoch))
