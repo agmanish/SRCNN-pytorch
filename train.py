@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
     print('best epoch: {}, psnr: {:.2f}'.format(best_epoch, best_psnr))
     torch.save(best_weights, os.path.join(args.outputs_dir, 'best.pth'))
-    print(type(loss_dict),type(panr_dict),type(ssim_dict),type(epoch_psnr),type(epoch_ssim),type(epoch),
+    print(type(loss_dict),type(panr_dict),type(ssim_dict),type(epoch_psnr),type(epoch_ssim),type(epoch))
     train_metrics={
         "scale":args.scale,
         "learning_rate":args.lr,
