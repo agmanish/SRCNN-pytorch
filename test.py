@@ -41,16 +41,16 @@ if __name__ == '__main__':
       image = pil_image.open(os.path.join(ip_path,file)).convert('RGB')
     
       orig= np.array(image).astype(np.float32)
-      print(orig.size())
+      print(orig.shape)
       orig=convert_rgb_to_ycbcr(orig)  
-      print(orig.size(),preds.size())
+      print(orig.shape)
       orig = orig[..., 0]
-      print(orig.size(),preds.size())
+      print(orig.shape)
       orig /= 255.
       orig = torch.from_numpy(orig).to(device)
-      print(orig.size(),preds.size())
+      print(orig.size())
       oig = orig.unsqueeze(0).unsqueeze(0)
-      print(orig.size(),preds.size())
+      print(orig.size())
       
       image_width = (image.width // args.scale) * args.scale
       image_height = (image.height // args.scale) * args.scale
