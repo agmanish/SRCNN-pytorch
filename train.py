@@ -89,8 +89,9 @@ if __name__ == '__main__':
 
                 t.set_postfix(loss='{:.6f}'.format(epoch_losses.avg))
                 t.update(len(inputs))
-                
-        loss_dict[str(epoch)]=epoch_losses.avg
+        print(type(epoch_losses.avg))
+        print(type(epoch_losses.avg.item())) 
+        loss_dict[str(epoch)]=epoch_losses.avg.item()
         torch.save(model.state_dict(), os.path.join(args.outputs_dir, 'epoch_{}.pth'.format(epoch)))
 
         model.eval()
@@ -108,7 +109,11 @@ if __name__ == '__main__':
             epoch_psnr.update(calc_psnr(preds, labels), len(inputs))
             epoch_ssim.update(calc_ssim(preds, labels), len(inputs))
         psnr_dict[str(epoch)]=epoch_psnr.avg.item()
+        print(type(epoch_psnr.avg))
+        print(type(epoch_psnr.avg.item())) 
         ssim_dict[str(epoch)]=epoch_ssim.avg.item()
+        print(type(epoch_ssim.avg))
+        print(type(epoch_ssim.avg.item())) 
         print('eval psnr: {:.2f}'.format(epoch_psnr.avg))
         print('eval ssim: {:.2f}'.format(epoch_ssim.avg))
 
