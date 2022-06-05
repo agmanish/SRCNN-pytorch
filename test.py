@@ -67,8 +67,9 @@ if __name__ == '__main__':
       print(y.shape)
       y /= 255.
       y = torch.from_numpy(y).to(device)
-      print(orig.size(),preds.size(),y.size())
-      y = y.unsqueeze(0).unsqueeze(0)
+      print(orig.size(),,y.size())
+      y = y.unsqueeze(0).unsqueeze(0)\
+      print(orig.size(),,y.size())
 
       with torch.no_grad():
           preds = model(y).clamp(0.0, 1.0)
