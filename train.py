@@ -91,7 +91,7 @@ if __name__ == '__main__':
                 t.update(len(inputs))
         #print(type(epoch_losses.avg))
         #print(type(epoch_losses.avg.item())) 
-        loss_dict[str(epoch)]=epoch_losses.avg.item()
+        loss_dict[str(epoch)]=epoch_losses.avg
         torch.save(model.state_dict(), os.path.join(args.outputs_dir, 'epoch_{}.pth'.format(epoch)))
 
         model.eval()
