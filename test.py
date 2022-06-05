@@ -69,7 +69,7 @@ if __name__ == '__main__':
       y = torch.from_numpy(y).to(device)
       print(orig.size(),y.size())
       y = y.unsqueeze(0).unsqueeze(0)\
-      print(orig.size(),,y.size())
+      print(orig.size(),y.size())
 
       with torch.no_grad():
           preds = model(y).clamp(0.0, 1.0)
