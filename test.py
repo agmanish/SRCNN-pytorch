@@ -92,4 +92,4 @@ if __name__ == '__main__':
 
     json_path=args.op_dir+"/test_metrics.json"
     with open(json_path, "w") as outfile:
-        json.dump(train_metrics, outfile)
+        json.dump(test_metrics, outfile)
