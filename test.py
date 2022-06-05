@@ -41,16 +41,12 @@ if __name__ == '__main__':
       image = pil_image.open(os.path.join(ip_path,file)).convert('RGB')
     
       orig= np.array(image).astype(np.float32)
-      print(orig.shape)
       orig=convert_rgb_to_ycbcr(orig)  
-      print(orig.shape)
       orig = orig[..., 0]
-      print(orig.shape)
       orig /= 255.
       orig = torch.from_numpy(orig).to(device)
-      print(orig.size())
       oig = orig.unsqueeze(0).unsqueeze(0)
-      print(orig.size())
+
       
       image_width = (image.width // args.scale) * args.scale
       image_height = (image.height // args.scale) * args.scale
@@ -64,15 +60,15 @@ if __name__ == '__main__':
       ycbcr = convert_rgb_to_ycbcr(image)
 
       y = ycbcr[..., 0]
-      print(y.shape)
       y /= 255.
       y = torch.from_numpy(y).to(device)
-      print(orig.size(),y.size())
       y = y.unsqueeze(0).unsqueeze(0)
-      print(orig.size(),y.size())
+      
 
       with torch.no_grad():
           preds = model(y).clamp(0.0, 1.0)
+      print(orig.size(),preds.size())
+      preds=preds.view(1,1,preds.size()[0],preds.size()[1])
       print(orig.size(),preds.size())
       psnr = calc_psnr(orig, preds)
       ssim = calc_ssim(orig, preds)
