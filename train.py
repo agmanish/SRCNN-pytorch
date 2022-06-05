@@ -123,9 +123,9 @@ if __name__ == '__main__':
     train_metrics={
         "scale":args.scale,
         "learning_rate":args.lr,
-        "batch_size":args.batch-size,
-        "num_epochs":args.num-epochs,
-        "num_workers":args.num-workers,
+        "batch_size":args.batch_size,
+        "num_epochs":args.num_epochs,
+        "num_workers":args.num_workers,
         "seed":args.seed,
         "loss_vs_epoch":loss_dict,
         "psnr_vs_epoch":psnr_dict,
