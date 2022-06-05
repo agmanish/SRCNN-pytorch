@@ -40,6 +40,7 @@ if __name__ == '__main__':
     for file in filenames:
       image = pil_image.open(os.path.join(ip_path,file)).convert('RGB')
       orig= np.array(image)
+      orig=torch.from_numpy(orig).to(device)
       image_width = (image.width // args.scale) * args.scale
       image_height = (image.height // args.scale) * args.scale
       image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
