@@ -68,7 +68,7 @@ if __name__ == '__main__':
       with torch.no_grad():
           preds = model(y).clamp(0.0, 1.0)
       print(orig.size(),preds.size())
-      preds=preds.view(1,1,preds.size()[0],preds.size()[1])
+      orig=orig.view(1,1,orig.size()[0],orig.size()[1])
       print(orig.size(),preds.size())
       psnr = calc_psnr(orig, preds)
       ssim = calc_ssim(orig, preds)
