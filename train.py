@@ -60,6 +60,7 @@ if __name__ == '__main__':
     best_weights = copy.deepcopy(model.state_dict())
     best_epoch = 0
     best_psnr = 0.0
+    best_ssim = 0.0
     loss_dict={}
     psnr_dict={}
     ssim_dict={}
@@ -132,7 +133,7 @@ if __name__ == '__main__':
         "ssim_vs_epoch":ssim_dict,
         "best_epoch":best_epoch,
         "best_psnr":best_psnr,
-        #"best_ssim":best_ssim
+        "best_ssim":best_ssim
     }
     json_path=args.opm_dir+"/train_metrics.json"
     with open(json_path, "w") as outfile:
