@@ -42,7 +42,7 @@ if __name__ == '__main__':
     
       orig= np.array(image).astype(np.float32)
       orig=convert_rgb_to_ycbcr(orig)  
-      orig=torch.from_numpy(orig).to(device)
+ 
       orig = orig[..., 0]
       orig /= 255.
       orig = torch.from_numpy(orig).to(device)
