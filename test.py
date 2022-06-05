@@ -39,7 +39,7 @@ if __name__ == '__main__':
     
     for file in filenames:
       image = pil_image.open(os.path.join(ip_path,file)).convert('RGB')
-
+      orig= np.array(image)
       image_width = (image.width // args.scale) * args.scale
       image_height = (image.height // args.scale) * args.scale
       image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
@@ -59,8 +59,8 @@ if __name__ == '__main__':
       with torch.no_grad():
           preds = model(y).clamp(0.0, 1.0)
 
-      psnr = calc_psnr(y, preds)
-      ssim = calc_ssim(y, preds)
+      psnr = calc_psnr(orig, preds)
+      ssim = calc_ssim(orig, preds)
       psnr_dict[file] = psnr
       psnr_dict[file] = ssim
       print('PSNR: {:.2f}'.format(psnr))
@@ -73,7 +73,7 @@ if __name__ == '__main__':
       output = pil_image.fromarray(output)
       output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
     
-    train_metrics={,
+    train_metrics={
         "psnr_vs_epoch":psnr_dict,
         "ssim_vs_epoch":ssim_dict,
     }
