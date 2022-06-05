@@ -67,7 +67,7 @@ if __name__ == '__main__':
       print(y.shape)
       y /= 255.
       y = torch.from_numpy(y).to(device)
-      print(orig.size(),,y.size())
+      print(orig.size(),y.size())
       y = y.unsqueeze(0).unsqueeze(0)\
       print(orig.size(),,y.size())
 
