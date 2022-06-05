@@ -17,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument('--op-dir', type=str, required=True)
     parser.add_argument('--scale', type=int, default=2)
     args = parser.parse_args()
-    ip_path=args.test-img-dir
+    ip_path=args.test_img_dir
 
     filenames=os.listdir(ip_path)
     
@@ -45,7 +45,7 @@ if __name__ == '__main__':
       image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
       image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
       image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
-      op_name=os.path.join(args.op-dir,file)
+      op_name=os.path.join(args.op_dir,file)
       image.save(op_name.replace('.', '_bicubic_x{}.'.format(args.scale)))
 
       image = np.array(image).astype(np.float32)
@@ -78,6 +78,6 @@ if __name__ == '__main__':
         "ssim_vs_epoch":ssim_dict,
     }
 
-    json_path=args.op-dir+"/test_metrics.json"
+    json_path=args.op_dir+"/test_metrics.json"
     with open(json_path, "w") as outfile:
         json.dump(train_metrics, outfile)
