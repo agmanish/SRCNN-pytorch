@@ -92,6 +92,8 @@ if __name__ == '__main__':
         #print(type(epoch_losses.avg))
         #print(type(epoch_losses.avg.item())) 
         loss_dict[str(epoch)]=epoch_losses.avg
+        print(type(loss_dict))
+        print(type(loss_dict[str(epoch)]))
         torch.save(model.state_dict(), os.path.join(args.outputs_dir, 'epoch_{}.pth'.format(epoch)))
 
         model.eval()
@@ -109,8 +111,12 @@ if __name__ == '__main__':
             epoch_psnr.update(calc_psnr(preds, labels), len(inputs))
             epoch_ssim.update(calc_ssim(preds, labels), len(inputs))
         psnr_dict[str(epoch)]=epoch_psnr.avg
+        print(type(psnr_dict))
+        print(type(psnr_dict[str(epoch)]))
         
         ssim_dict[str(epoch)]=epoch_ssim.avg
+        print(type(ssim_dict))
+        print(type(ssim_dict[str(epoch)]))
         print('eval psnr: {:.2f}'.format(epoch_psnr.avg))
         print('eval ssim: {:.2f}'.format(epoch_ssim.avg))
 
@@ -122,7 +128,7 @@ if __name__ == '__main__':
 
     print('best epoch: {}, psnr: {:.2f}'.format(best_epoch, best_psnr))
     torch.save(best_weights, os.path.join(args.outputs_dir, 'best.pth'))
-    
+    print(type(loss_dict),type(panr_dict),type(ssim_dict),type(epoch_psnr),type(epoch_ssim),type(epoch),
     train_metrics={
         "scale":args.scale,
         "learning_rate":args.lr,
