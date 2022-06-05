@@ -67,9 +67,9 @@ if __name__ == '__main__':
 
           with torch.no_grad():
               preds = model(y).clamp(0.0, 1.0)
-          print(orig.size(),preds.size())
+          #print(orig.size(),preds.size())
           orig=orig.view(1,1,orig.size()[0],orig.size()[1])
-          print(orig.size(),preds.size())
+          #print(orig.size(),preds.size())
           psnr = calc_psnr(orig, preds)
           ssim = calc_ssim(orig, preds)
           
@@ -84,7 +84,7 @@ if __name__ == '__main__':
           output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
           psnr_dict[file] = psnr.item()
           ssim_dict[file] = ssim.item()
-          print(psnr_dict[file], ssim_dict[file])
+          #print(psnr_dict[file], ssim_dict[file])
     test_metrics={
         "psnr_vs_epoch":psnr_dict,
         "ssim_vs_epoch":ssim_dict,
