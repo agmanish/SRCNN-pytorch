@@ -106,8 +106,8 @@ if __name__ == '__main__':
 
             epoch_psnr.update(calc_psnr(preds, labels), len(inputs))
             epoch_ssim.update(calc_ssim(preds, labels), len(inputs))
-        psnr_dict[str(epoch)]=epoch_psnr.avg
-        ssim_dict[str(epoch)]=epoch_ssim.avg
+        psnr_dict[str(epoch)]=epoch_psnr.avg.item()
+        ssim_dict[str(epoch)]=epoch_ssim.avg.item()
         print('eval psnr: {:.2f}'.format(epoch_psnr.avg))
         print('eval ssim: {:.2f}'.format(epoch_ssim.avg))
 
@@ -130,10 +130,10 @@ if __name__ == '__main__':
         "loss_vs_epoch":loss_dict,
         "psnr_vs_epoch":psnr_dict,
         "ssim_vs_epoch":ssim_dict,
-        "best_epoch":best_epoch,
-        "best_psnr":best_psnr,
-        "best_ssim":best_ssim
+        "best_epoch":best_epoch.item(),
+        "best_psnr":best_psnr.item(),
+        "best_ssim":best_ssim.item()
     }
-    json_path=args.opm-dir+"/train_metrics.json"
+    json_path=args.opm_dir+"/train_metrics.json"
     with open(json_path, "w") as outfile:
         json.dump(train_metrics, outfile)
