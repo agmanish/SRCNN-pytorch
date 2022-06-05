@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from skimage.metrics import peak_signal_noise_ratio,structural_similarity
+from torchmetrics import StructuralSimilarityIndexMeasure
 
 
 def convert_rgb_to_y(img):
@@ -51,8 +51,9 @@ def convert_ycbcr_to_rgb(img):
 def calc_psnr(img1, img2):
     return 10. * torch.log10(1. / torch.mean((img1 - img2) ** 2))
 
-def calc_ssim(img1, img2) :
-    return structural_similarity(img1,img2)
+def calc_ssim(preds, target) :
+    ssim = StructuralSimilarityIndexMeasure()
+    return ssim(preds, target)
 
 
 class AverageMeter(object):
