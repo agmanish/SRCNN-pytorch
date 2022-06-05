@@ -39,8 +39,15 @@ if __name__ == '__main__':
     
     for file in filenames:
       image = pil_image.open(os.path.join(ip_path,file)).convert('RGB')
-      orig= np.array(image)
+    
+      orig= np.array(image).astype(np.float32)
+      orig=convert_rgb_to_ycbcr(orig)  
       orig=torch.from_numpy(orig).to(device)
+      orig = orig[..., 0]
+      orig /= 255.
+      orig = torch.from_numpy(orig).to(device)
+      oig = orig.unsqueeze(0).unsqueeze(0)
+        
       image_width = (image.width // args.scale) * args.scale
       image_height = (image.height // args.scale) * args.scale
       image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
