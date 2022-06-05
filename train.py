@@ -122,8 +122,8 @@ if __name__ == '__main__':
 
         if epoch_psnr.avg > best_psnr:
             best_epoch = epoch
-            best_psnr = epoch_psnr.avg
-            best_ssim = epoch_ssim.avg 
+            best_psnr = epoch_psnr.avg.item()
+            best_ssim = epoch_ssim.avg.item()
             best_weights = copy.deepcopy(model.state_dict())
 
     print('best epoch: {}, psnr: {:.2f}'.format(best_epoch, best_psnr))
