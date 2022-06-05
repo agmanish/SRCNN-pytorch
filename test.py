@@ -82,8 +82,8 @@ if __name__ == '__main__':
           output = np.clip(convert_ycbcr_to_rgb(output), 0.0, 255.0).astype(np.uint8)
           output = pil_image.fromarray(output)
           output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
-          psnr_dict[file] = psnr[0]
-          ssim_dict[file] = ssim[0]
+          psnr_dict[file] = psnr[0].tolist()
+          ssim_dict[file] = ssim[0].tolist()
           print(psnr_dict[file], ssim_dict[file])
     test_metrics={
         "psnr_vs_epoch":psnr_dict,
