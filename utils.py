@@ -50,6 +50,14 @@ def convert_ycbcr_to_rgb(img):
 def calc_psnr(img1, img2):
     return 10. * torch.log10(1. / torch.mean((img1 - img2) ** 2))
 
+def calc_ssim(outputs, labels) :
+    N, _, _, _ = outputs.shape
+    ssim = 0
+    for i in range(N):
+        
+        ssim += structural_similarity(labels[i],outputs[i], win_size=3, multichannel=True)
+    return ssim / N
+
 
 class AverageMeter(object):
     def __init__(self):
