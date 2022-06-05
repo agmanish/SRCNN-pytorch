@@ -130,7 +130,7 @@ if __name__ == '__main__':
         "loss_vs_epoch":loss_dict,
         "psnr_vs_epoch":psnr_dict,
         "ssim_vs_epoch":ssim_dict,
-        "best_epoch":best_epoch.item(),
+        "best_epoch":best_epoch,
         "best_psnr":best_psnr.item(),
         "best_ssim":best_ssim.item()
     }
