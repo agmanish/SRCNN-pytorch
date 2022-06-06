@@ -1,5 +1,6 @@
 import argparse
 import json
+import time
 
 import torch
 import torch.backends.cudnn as cudnn
@@ -11,6 +12,7 @@ from utils import convert_rgb_to_ycbcr, convert_ycbcr_to_rgb, calc_psnr, calc_ss
 
 
 if __name__ == '__main__':
+    start = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights-file', type=str, required=True)
     parser.add_argument('--test-img-dir', type=str, required=True)
@@ -85,9 +87,12 @@ if __name__ == '__main__':
           psnr_dict[file] = psnr.item()
           ssim_dict[file] = ssim.item()
           #print(psnr_dict[file], ssim_dict[file])
+    end = time.time()
+    timexec=end-start
     test_metrics={
         "psnr_vs_epoch":psnr_dict,
         "ssim_vs_epoch":ssim_dict,
+        "time_of_execution":timexec
     }
 
     json_path=args.op_dir+"/test_metrics.json"
