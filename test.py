@@ -56,9 +56,10 @@ if __name__ == '__main__':
           image_height = (image.height // args.scale) * args.scale
           image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
           image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
+          op_name=os.path.join(args.op_dir,file)  
           image.save(op_name.replace('.', '_downsized_x{}.'.format(args.scale)))
           image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
-          op_name=os.path.join(args.op_dir,file)
+          
           image.save(op_name.replace('.', '_bicubic_x{}.'.format(args.scale)))
 
           image = np.array(image).astype(np.float32)
