@@ -119,28 +119,29 @@ if __name__ == '__main__':
             best_psnr = epoch_psnr.avg.item()
             best_ssim = epoch_ssim.avg.item()
             best_weights = copy.deepcopy(model.state_dict())
+        end = time.time()
+        timexec=end-start
+
+        train_metrics={
+            "scale":args.scale,
+            "learning_rate":args.lr,
+            "batch_size":args.batch_size,
+            "num_epochs":args.num_epochs,
+            "num_workers":args.num_workers,
+            "seed":args.seed,
+            "loss_vs_epoch":loss_dict,
+            "psnr_vs_epoch":psnr_dict,
+            "ssim_vs_epoch":ssim_dict,
+            "best_epoch":best_epoch,
+            "best_psnr":best_psnr,
+            "execution_time":timexec,
+            "best_ssim":best_ssim
+        }
+        json_path=args.opm_dir+"/train_metrics.json"
+        with open(json_path, "w") as outfile:
+            json.dump(train_metrics, outfile)
 
     print('best epoch: {}, psnr: {:.2f}'.format(best_epoch, best_psnr))
     torch.save(best_weights, os.path.join(args.outputs_dir, 'best.pth'))
-    end = time.time()
-    timexec=end-start
     
-    train_metrics={
-        "scale":args.scale,
-        "learning_rate":args.lr,
-        "batch_size":args.batch_size,
-        "num_epochs":args.num_epochs,
-        "num_workers":args.num_workers,
-        "seed":args.seed,
-        "loss_vs_epoch":loss_dict,
-        "psnr_vs_epoch":psnr_dict,
-        "ssim_vs_epoch":ssim_dict,
-        "best_epoch":best_epoch,
-        "best_psnr":best_psnr,
-        "execution_time":timexec,
-        "best_ssim":best_ssim
-    }
-    json_path=args.opm_dir+"/train_metrics.json"
-    with open(json_path, "w") as outfile:
-        json.dump(train_metrics, outfile)
  
