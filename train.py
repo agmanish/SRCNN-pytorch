@@ -1,6 +1,7 @@
 import argparse
 import os
 import copy
+import time
 
 import torch
 from torch import nn
@@ -16,6 +17,7 @@ import json
 
 
 if __name__ == '__main__':
+    start = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('--train-file', type=str, required=True)
     parser.add_argument('--eval-file', type=str, required=True)
@@ -89,11 +91,7 @@ if __name__ == '__main__':
 
                 t.set_postfix(loss='{:.6f}'.format(epoch_losses.avg))
                 t.update(len(inputs))
-        #print(type(epoch_losses.avg))
-        #print(type(epoch_losses.avg.item())) 
         loss_dict[str(epoch)]=epoch_losses.avg
-        #print(type(loss_dict))
-        #print(type(loss_dict[str(epoch)]))
         torch.save(model.state_dict(), os.path.join(args.outputs_dir, 'epoch_{}.pth'.format(epoch)))
 
         model.eval()
@@ -110,13 +108,9 @@ if __name__ == '__main__':
 
             epoch_psnr.update(calc_psnr(preds, labels), len(inputs))
             epoch_ssim.update(calc_ssim(preds, labels), len(inputs))
-        psnr_dict[str(epoch)]=epoch_psnr.avg.item()
-        #print(type(psnr_dict))
-        #print(type(psnr_dict[str(epoch)]))
         
+        psnr_dict[str(epoch)]=epoch_psnr.avg.item()
         ssim_dict[str(epoch)]=epoch_ssim.avg.item()
-        #print(type(ssim_dict))
-        #print(type(ssim_dict[str(epoch)]))
         print('eval psnr: {:.2f}'.format(epoch_psnr.avg))
         print('eval ssim: {:.2f}'.format(epoch_ssim.avg))
 
@@ -126,9 +120,11 @@ if __name__ == '__main__':
             best_ssim = epoch_ssim.avg.item()
             best_weights = copy.deepcopy(model.state_dict())
 
-    #print('best epoch: {}, psnr: {:.2f}'.format(best_epoch, best_psnr))
+    print('best epoch: {}, psnr: {:.2f}'.format(best_epoch, best_psnr))
     torch.save(best_weights, os.path.join(args.outputs_dir, 'best.pth'))
-    #print(type(loss_dict['0']),type(psnr_dict['0']),type(ssim_dict['0']),type(epoch_psnr),type(epoch_ssim),type(epoch))
+    end = time.time()
+    timexec=end-start
+    
     train_metrics={
         "scale":args.scale,
         "learning_rate":args.lr,
@@ -141,6 +137,7 @@ if __name__ == '__main__':
         "ssim_vs_epoch":ssim_dict,
         "best_epoch":best_epoch,
         "best_psnr":best_psnr,
+        "execution_time":timexec
         "best_ssim":best_ssim
     }
     json_path=args.opm_dir+"/train_metrics.json"
