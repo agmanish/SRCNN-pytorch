@@ -38,6 +38,8 @@ if __name__ == '__main__':
     model.eval()
     psnr_dict={}
     ssim_dict={}
+    bi_psnr_dict={}
+    bi_ssim_dict={}
     
     for file in filenames:
           image = pil_image.open(os.path.join(ip_path,file)).convert('RGB')
@@ -54,6 +56,7 @@ if __name__ == '__main__':
           image_height = (image.height // args.scale) * args.scale
           image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
           image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
+          image.save(op_name.replace('.', '_downsized_x{}.'.format(args.scale)))
           image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
           op_name=os.path.join(args.op_dir,file)
           image.save(op_name.replace('.', '_bicubic_x{}.'.format(args.scale)))
@@ -69,11 +72,12 @@ if __name__ == '__main__':
 
           with torch.no_grad():
               preds = model(y).clamp(0.0, 1.0)
-          #print(orig.size(),preds.size())
           orig=orig.view(1,1,orig.size()[0],orig.size()[1])
-          #print(orig.size(),preds.size())
           psnr = calc_psnr(orig, preds)
           ssim = calc_ssim(orig, preds)
+          bi_psnr = calc_psnr(orig, y)
+          bi_ssim = calc_ssim(orig, y)
+          
           
           print('PSNR: {:.2f}'.format(psnr))
           print('SSIM: {:.2f}'.format(ssim))
@@ -86,12 +90,16 @@ if __name__ == '__main__':
           output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
           psnr_dict[file] = psnr.item()
           ssim_dict[file] = ssim.item()
+          bi_psnr_dict[file] = bi_psnr.item()
+          bi_ssim_dict[file] = bi_ssim.item()
           #print(psnr_dict[file], ssim_dict[file])
     end = time.time()
     timexec=end-start
     test_metrics={
         "psnr_vs_epoch":psnr_dict,
         "ssim_vs_epoch":ssim_dict,
+        "bicubic_psnr_vs_epoch":bi_psnr_dict,
+        "bicubic_ssim_vs_epoch":bi_ssim_dict,
         "time_of_execution":timexec
     }
 
