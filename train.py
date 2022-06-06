@@ -137,7 +137,7 @@ if __name__ == '__main__':
         "ssim_vs_epoch":ssim_dict,
         "best_epoch":best_epoch,
         "best_psnr":best_psnr,
-        "execution_time":timexec
+        "execution_time":timexec,
         "best_ssim":best_ssim
     }
     json_path=args.opm_dir+"/train_metrics.json"
