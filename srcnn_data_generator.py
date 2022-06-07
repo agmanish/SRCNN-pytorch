@@ -12,7 +12,7 @@ from utils import convert_rgb_to_ycbcr, convert_ycbcr_to_rgb, calc_psnr, calc_ss
 
 
 if __name__ == '__main__':
-    start = time.time()
+    #start = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights-file', type=str, required=True)
     parser.add_argument('--ip-dir', type=str, required=True)
@@ -37,8 +37,8 @@ if __name__ == '__main__':
             raise KeyError(n)
 
     model.eval()
-    psnr_dict={}
-    ssim_dict={}
+    #psnr_dict={}
+    #ssim_dict={}
 
     for clas in classnames:
         classpath=os.path.join(ip_path,clas)
@@ -79,13 +79,13 @@ if __name__ == '__main__':
             with torch.no_grad():
                 preds = model(y).clamp(0.0, 1.0)
             orig=orig.view(1,1,orig.size()[0],orig.size()[1])
-            psnr = calc_psnr(orig, preds)
-            ssim = calc_ssim(orig, preds)
+            #psnr = calc_psnr(orig, preds)
+            #ssim = calc_ssim(orig, preds)
             
             
             
-            print('PSNR: {:.2f}'.format(psnr))
-            print('SSIM: {:.2f}'.format(ssim))
+            #print('PSNR: {:.2f}'.format(psnr))
+            #print('SSIM: {:.2f}'.format(ssim))
 
             preds = preds.mul(255.0).cpu().numpy().squeeze(0).squeeze(0)
 
@@ -93,11 +93,12 @@ if __name__ == '__main__':
             output = np.clip(convert_ycbcr_to_rgb(output), 0.0, 255.0).astype(np.uint8)
             output = pil_image.fromarray(output)
             output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
-            psnr_dict[file] = psnr.item()
-            ssim_dict[file] = ssim.item()
+            #psnr_dict[file] = psnr.item()
+            #ssim_dict[file] = ssim.item()
             #print(psnr_dict[file], ssim_dict[file])
-        end = time.time()
-        timexec=end-start
+            print(file)
+        #end = time.time()
+        '''timexec=end-start
         test_metrics={
             "psnr_vs_epoch":psnr_dict,
             "ssim_vs_epoch":ssim_dict,
@@ -106,4 +107,4 @@ if __name__ == '__main__':
 
         json_path=args.op_dir+"/test_metrics.json"
         with open(json_path, "w") as outfile:
-            json.dump(test_metrics, outfile)
+            json.dump(test_metrics, outfile)'''
