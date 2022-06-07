@@ -21,7 +21,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     ip_path=args.ip_dir
-    op_path=args._dir
+    op_path=args.op_dir
     classnames=os.listdir(ip_path)
     
     cudnn.benchmark = True
