@@ -75,7 +75,11 @@ if __name__ == '__main__':
     print("conv_layers")
     for file in filenames:
           image = pil_image.open(os.path.join(ip_path,file)).convert('RGB')
-
+          image2 = transform(image)
+          print(f"Image shape before: {image2.shape}")
+          image2 = image2.unsqueeze(0)
+          print(f"Image shape after: {image2.shape}")
+          image2 = image2.to(device)
           orig= np.array(image).astype(np.float32)
           orig=convert_rgb_to_ycbcr(orig)  
           orig = orig[..., 0]
@@ -104,9 +108,9 @@ if __name__ == '__main__':
           outputs = []
           names = []
           for layer in conv_layers[0:]:
-              image = layer(y)
-              outputs.append(y)
-              names.append(str(y))
+              image = layer(image2)
+              outputs.append(imag2)
+              names.append(str(image2))
           print(len(outputs))
           #print feature_maps
           for feature_map in outputs:
