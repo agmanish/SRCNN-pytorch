@@ -47,56 +47,57 @@ if __name__ == '__main__':
             os.makedirs(opclasspath)
         filenames=os.listdir(classpath)
         for file in filenames:
-            image = pil_image.open(os.path.join(classpath,file)).convert('RGB')
+            if file != ".DSSTORE":
+                image = pil_image.open(os.path.join(classpath,file)).convert('RGB')
 
-            orig= np.array(image).astype(np.float32)
-            orig=convert_rgb_to_ycbcr(orig)  
-            orig = orig[..., 0]
-            orig /= 255.
-            orig = torch.from_numpy(orig).to(device)
-            oig = orig.unsqueeze(0).unsqueeze(0)
-
-
-            image_width = (image.width // args.scale) * args.scale
-            image_height = (image.height // args.scale) * args.scale
-            image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
-            #image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
-            op_name=os.path.join(opclasspath,file)  
-            #image.save(op_name.replace('.', '_downsized_x{}.'.format(args.scale)))
-            bi_image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
-            
-            #image.save(op_name.replace('.', '_bicubic_x{}.'.format(args.scale)))
-
-            bi_image = np.array(bi_image).astype(np.float32)
-            ycbcr = convert_rgb_to_ycbcr(bi_image)
-
-            y = ycbcr[..., 0]
-            y /= 255.
-            y = torch.from_numpy(y).to(device)
-            y = y.unsqueeze(0).unsqueeze(0)
+                orig= np.array(image).astype(np.float32)
+                orig=convert_rgb_to_ycbcr(orig)  
+                orig = orig[..., 0]
+                orig /= 255.
+                orig = torch.from_numpy(orig).to(device)
+                oig = orig.unsqueeze(0).unsqueeze(0)
 
 
-            with torch.no_grad():
-                preds = model(y).clamp(0.0, 1.0)
-            orig=orig.view(1,1,orig.size()[0],orig.size()[1])
-            #psnr = calc_psnr(orig, preds)
-            #ssim = calc_ssim(orig, preds)
-            
-            
-            
-            #print('PSNR: {:.2f}'.format(psnr))
-            #print('SSIM: {:.2f}'.format(ssim))
+                image_width = (image.width // args.scale) * args.scale
+                image_height = (image.height // args.scale) * args.scale
+                image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
+                #image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
+                op_name=os.path.join(opclasspath,file)  
+                #image.save(op_name.replace('.', '_downsized_x{}.'.format(args.scale)))
+                bi_image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
 
-            preds = preds.mul(255.0).cpu().numpy().squeeze(0).squeeze(0)
+                #image.save(op_name.replace('.', '_bicubic_x{}.'.format(args.scale)))
 
-            output = np.array([preds, ycbcr[..., 1], ycbcr[..., 2]]).transpose([1, 2, 0])
-            output = np.clip(convert_ycbcr_to_rgb(output), 0.0, 255.0).astype(np.uint8)
-            output = pil_image.fromarray(output)
-            output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
-            #psnr_dict[file] = psnr.item()
-            #ssim_dict[file] = ssim.item()
-            #print(psnr_dict[file], ssim_dict[file])
-            print(file)
+                bi_image = np.array(bi_image).astype(np.float32)
+                ycbcr = convert_rgb_to_ycbcr(bi_image)
+
+                y = ycbcr[..., 0]
+                y /= 255.
+                y = torch.from_numpy(y).to(device)
+                y = y.unsqueeze(0).unsqueeze(0)
+
+
+                with torch.no_grad():
+                    preds = model(y).clamp(0.0, 1.0)
+                orig=orig.view(1,1,orig.size()[0],orig.size()[1])
+                #psnr = calc_psnr(orig, preds)
+                #ssim = calc_ssim(orig, preds)
+
+
+
+                #print('PSNR: {:.2f}'.format(psnr))
+                #print('SSIM: {:.2f}'.format(ssim))
+
+                preds = preds.mul(255.0).cpu().numpy().squeeze(0).squeeze(0)
+
+                output = np.array([preds, ycbcr[..., 1], ycbcr[..., 2]]).transpose([1, 2, 0])
+                output = np.clip(convert_ycbcr_to_rgb(output), 0.0, 255.0).astype(np.uint8)
+                output = pil_image.fromarray(output)
+                output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
+                #psnr_dict[file] = psnr.item()
+                #ssim_dict[file] = ssim.item()
+                #print(psnr_dict[file], ssim_dict[file])
+                print(file)
         #end = time.time()
         '''timexec=end-start
         test_metrics={
