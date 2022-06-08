@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import scipy.misc
 from PIL import Image
 import json
-%matplotlib inline
 import torch
 import torch.backends.cudnn as cudnn
 import numpy as np
