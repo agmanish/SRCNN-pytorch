@@ -29,7 +29,12 @@ if __name__ == '__main__':
     parser.add_argument('--scale', type=int, default=2)
     args = parser.parse_args()
     ip_path=args.test_img_dir
-
+    
+    transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=0., std=1.)
+    ])
     filenames=os.listdir(ip_path)
     
     cudnn.benchmark = True
