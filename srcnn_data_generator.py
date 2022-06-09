@@ -93,7 +93,7 @@ if __name__ == '__main__':
                 output = np.array([preds, ycbcr[..., 1], ycbcr[..., 2]]).transpose([1, 2, 0])
                 output = np.clip(convert_ycbcr_to_rgb(output), 0.0, 255.0).astype(np.uint8)
                 output = pil_image.fromarray(output)
-                output.save(op_name.replace('.', '_srcnn_x{}.'.format(args.scale)))
+                output.save(op_name)
                 #psnr_dict[file] = psnr.item()
                 #ssim_dict[file] = ssim.item()
                 #print(psnr_dict[file], ssim_dict[file])
