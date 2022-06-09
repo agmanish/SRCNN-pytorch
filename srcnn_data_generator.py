@@ -39,7 +39,7 @@ if __name__ == '__main__':
     model.eval()
     #psnr_dict={}
     #ssim_dict={}
-
+    i=0
     for clas in classnames:
         classpath=os.path.join(ip_path,clas)
         opclasspath=os.path.join(op_path,clas)
@@ -97,8 +97,9 @@ if __name__ == '__main__':
                 #psnr_dict[file] = psnr.item()
                 #ssim_dict[file] = ssim.item()
                 #print(psnr_dict[file], ssim_dict[file])
-                print(file)
+                i+=1
         #end = time.time()
+        print(i)
         '''timexec=end-start
         test_metrics={
             "psnr_vs_epoch":psnr_dict,
