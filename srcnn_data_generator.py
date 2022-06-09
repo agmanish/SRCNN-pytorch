@@ -46,9 +46,9 @@ if __name__ == '__main__':
         if not os.path.exists(opclasspath):
             os.makedirs(opclasspath)
         filenames=os.listdir(classpath)
-        for file in filenames:
-            if file != ".DSSTORE":
-                image = pil_image.open(os.path.join(classpath,file)).convert('RGB')
+        for fil in filenames:
+            if not fil.startswith('.'):
+                image = pil_image.open(os.path.join(classpath,fil)).convert('RGB')
 
                 orig= np.array(image).astype(np.float32)
                 orig=convert_rgb_to_ycbcr(orig)  
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                 image_height = (image.height // args.scale) * args.scale
                 image = image.resize((image_width, image_height), resample=pil_image.BICUBIC)
                 #image = image.resize((image.width // args.scale, image.height // args.scale), resample=pil_image.BICUBIC)
-                op_name=os.path.join(opclasspath,file)  
+                op_name=os.path.join(opclasspath,fil)  
                 #image.save(op_name.replace('.', '_downsized_x{}.'.format(args.scale)))
                 bi_image = image.resize((image.width * args.scale, image.height * args.scale), resample=pil_image.BICUBIC)
 
